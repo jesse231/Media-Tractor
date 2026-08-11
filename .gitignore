@@ -2,5 +2,8 @@
 build/
 out/
 
+# Ignore personal vscode configs
+.vscode
+
 # Ignore Mac system files
 .DS_Store

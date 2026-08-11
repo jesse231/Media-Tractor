@@ -1,20 +1,42 @@
 #include <iostream>
-#include <complex>
+#include <string>
+#include <SQLiteCpp/SQLiteCpp.h>
 
-using namespace std;
+int main() {
+    try {
+        // 1. Open the database
+        // RAII means the database is automatically closed when 'db' goes out of scope!
+        SQLite::Database db("mediatractor.db", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+        std::cout << "Opened database successfully.\n";
 
-string makeString(string, string);
+        // 2. Create the table using .exec()
+        db.exec("CREATE TABLE IF NOT EXISTS Shows ("
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                "Title TEXT NOT NULL, "
+                "Status BOOLEAN NOT NULL);");
 
-int main(int, char**){
-    string printThis = makeString("I am", "Perry");
+        // 3. Prepare an INSERT statement
+        std::string title = "Severance";
+        bool status = true;
+        
+        SQLite::Statement query(db, "INSERT INTO Shows (Title, Status) VALUES (?, ?)");
+        
+        // 4. Bind variables
+        query.bind(1, title);
+        query.bind(2, status);
+        
+        // 5. Execute the query
+        query.exec();
+        
+        std::cout << "Show added successfully!\n";
+        
+        // No sqlite3_finalize() needed! The 'query' object cleans itself up.
 
-    double x = {4.4};
-    double y = {5.2};
+    } catch (const std::exception& e) {
+        // SQLiteCpp throws standard C++ exceptions on errors
+        std::cerr << "Database Error: " << e.what() << std::endl;
+        return 1;
+    }
 
-    cout << x + y << "\n";
-    cout << printThis;
-}
-
-string makeString(string str1, string str2) {
-    return str1 + " " + str2 + "!\n";
+    return 0;
 }
