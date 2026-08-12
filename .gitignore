@@ -2,6 +2,9 @@
 build/
 out/
 
+# Ignore generated files
+generated/
+
 # Ignore personal vscode configs
 .vscode
 
