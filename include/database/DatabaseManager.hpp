@@ -3,8 +3,6 @@
 #include <string>
 #include <SQLiteCpp/SQLiteCpp.h>
 
-namespace database {
-
 class DatabaseManager {
 public:
     explicit DatabaseManager(const std::string& dbPath);
@@ -21,5 +19,3 @@ public:
 private:
     SQLite::Database m_db;
 };
-
-}

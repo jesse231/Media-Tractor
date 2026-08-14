@@ -16,8 +16,13 @@ FetchContent_Declare(
     GIT_TAG        3.3.1 
 )
 
-# Download and make the library available
-FetchContent_MakeAvailable(sqlitecpp)
+# Fetch JSON handler
+FetchContent_Declare(
+    json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+)
+
+FetchContent_MakeAvailable(sqlitecpp json)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS 
     "src/*.cpp"
@@ -34,6 +39,7 @@ target_link_libraries(Media-Tractor
     sqlite3
     pthread
     dl
+    nlohmann_json::nlohmann_json
 )
 
 include(CTest)
