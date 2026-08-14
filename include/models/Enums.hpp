@@ -12,7 +12,6 @@ enum class MediaType : int {
 };
 
 enum class WatchStatus : int {
-    None = 0,
     Watchlist = 1,
     InProgress = 2,
     Completed = 3,
@@ -35,7 +34,6 @@ namespace EnumHelpers {
 
     inline std::string watchStatusToString(WatchStatus status) {
         switch (status) {
-            case WatchStatus::None: return "None";
             case WatchStatus::Watchlist: return "Watchlist";
             case WatchStatus::InProgress: return "In Progress";
             case WatchStatus::Completed: return "Completed";
@@ -65,10 +63,7 @@ namespace EnumHelpers {
     }
 
     inline std::optional<WatchStatus> stringToWatchStatus(std::string status) {
-        if (status == "None") {
-            return WatchStatus::None;
-        }
-        else if (status == "Watchlist") {
+        if (status == "Watchlist") {
             return WatchStatus::Watchlist;
         }
         else if (status == "In Progress") {
