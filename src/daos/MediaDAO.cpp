@@ -71,7 +71,7 @@ std::optional<Media> MediaDAO::getMediaById(int id) {
         return Media(mediaId, mid, rating, status, media_type, tags);
     }
 
-    return std::nullopt; // No row found
+    return std::nullopt;
 }
 
 std::vector<Media> MediaDAO::getAllMedia() {
