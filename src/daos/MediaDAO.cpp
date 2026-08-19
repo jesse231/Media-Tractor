@@ -66,9 +66,15 @@ std::optional<Media> MediaDAO::getMediaById(int id) {
     if (query.executeStep()) {
         int mediaId = query.getColumn(0).getInt();
         int mid = query.getColumn(1).getInt();
-        std::optional<bool> rating = query.getColumn(2).getInt();
         WatchStatus status = EnumHelpers::stringToWatchStatus(query.getColumn(3).getString()).value();
         MediaType media_type = EnumHelpers::stringToMediaType(query.getColumn(4).getString()).value();
+        
+        std::optional<bool> rating;
+        if (query.getColumn(2).isNull()) {
+            rating = std::nullopt;
+        } else {
+            rating = query.getColumn(2).getInt() != 0; 
+        }
 
         std::vector<std::string> tags;
         [[maybe_unused]] auto err = glz::read_json(tags, query.getColumn(5).getString());
@@ -86,10 +92,16 @@ std::vector<Media> MediaDAO::getAllMedia() {
     while (query.executeStep()) {
         int mediaId = query.getColumn(0).getInt();
         int mid = query.getColumn(1).getInt();
-        std::optional<bool> rating = query.getColumn(2).getInt();
         WatchStatus status = EnumHelpers::stringToWatchStatus(query.getColumn(3).getString()).value();
         MediaType media_type = EnumHelpers::stringToMediaType(query.getColumn(4).getString()).value();
         
+        std::optional<bool> rating;
+        if (query.getColumn(2).isNull()) {
+            rating = std::nullopt;
+        } else {
+            rating = query.getColumn(2).getInt() != 0; 
+        }
+
         std::vector<std::string> tags;
         [[maybe_unused]] auto err = glz::read_json(tags, query.getColumn(5).getString());
         
