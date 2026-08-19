@@ -11,7 +11,6 @@ public:
     DatabaseManager(const DatabaseManager&) = delete;
     DatabaseManager& operator=(const DatabaseManager&) = delete;
 
-    // Provides access to the underlying SQLite database connection.
     SQLite::Database& getDb();
 
     void initializeSchema();

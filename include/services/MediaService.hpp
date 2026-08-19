@@ -19,6 +19,5 @@ public:
 private:
     MediaDAO& m_mediaDao;
     
-    // Helper method to keep validation logic organized
     void validateMedia(const Media& media) const;
 };

@@ -18,6 +18,7 @@ std::vector<Media> MediaService::getAllMedia() {
     return m_mediaDao.getAllMedia();
 }
 
+// TODO: figure out contraints on our Media objects
 void MediaService::validateMedia(const Media& media) const {
     return;
 }

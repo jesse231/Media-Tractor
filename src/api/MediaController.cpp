@@ -12,7 +12,6 @@ void MediaController::registerRoutes(crow::SimpleApp& app) {
         try {
             auto allMedia = m_mediaService.getAllMedia();
             
-            // Glaze automatically converts the std::vector<models::Media> to a JSON array!
             std::string jsonResponse;
             (void)glz::write_json(allMedia, jsonResponse);
 
@@ -31,16 +30,13 @@ void MediaController::registerRoutes(crow::SimpleApp& app) {
         try {
             Media newMedia;
             
-            // Glaze automatically parses the JSON string directly into your C++ struct!
             auto parseError = glz::read_json(newMedia, req.body);
             if (parseError) {
                 return crow::response(400, R"({"error": "Invalid JSON format"})");
             }
 
-            // Send to Service Layer
             int newId = m_mediaService.addMedia(newMedia);
 
-            // Create a simple success response
             std::string responseBody = R"({"message": "Media added", "id": )" + std::to_string(newId) + "}";
             
             crow::response res(201, responseBody);
@@ -48,7 +44,6 @@ void MediaController::registerRoutes(crow::SimpleApp& app) {
             return res;
 
         } catch (const std::invalid_argument& e) {
-            // Business logic failures
             std::string errorJson = R"({"error": ")" + std::string(e.what()) + R"("})";
             return crow::response(400, errorJson);
         } catch (const std::exception& e) {

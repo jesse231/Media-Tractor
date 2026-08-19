@@ -3,7 +3,7 @@
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <stdexcept>
 #include <vector>
-#include <glaze/glaze.hpp> // Replaced nlohmann with glaze
+#include <glaze/glaze.hpp>
 
 MediaDAO::MediaDAO(DatabaseManager& dbManager)
     : m_dbManager(dbManager) {}
