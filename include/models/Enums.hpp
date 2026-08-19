@@ -2,6 +2,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <optional>
 
 enum class MediaType : int {
     Movie = 1,

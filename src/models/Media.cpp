@@ -1,12 +1,9 @@
 #include "models/Media.hpp"
-#include <nlohmann/json.hpp>
+#include <glaze/glaze.hpp>
 #include <ranges>
+#include <stdexcept>
 
 using namespace std;
-using json = nlohmann::json;
-
-Media::Media(int id, int mid, std::optional<bool> rating, WatchStatus status, MediaType type, vector<string> tags) 
-    : id(id), mid(mid), rating(rating), status(status), type(type), tags(tags) {}
 
 std::string Media::toString() {
     std::vector<std::string> result;
@@ -20,11 +17,18 @@ std::string Media::toString() {
     result.push_back("status: " + EnumHelpers::watchStatusToString(status));
     result.push_back("type: " + EnumHelpers::mediaTypeToString(type));
 
-    std::string joined = ((json) tags).dump();
+    std::string joined;
+    (void)glz::write_json(tags, joined);
 
     result.push_back("tags: " + joined);
 
-    return ((json) result).dump();
+    std::string final_json;
+    (void)glz::write_json(result, final_json);
+    return final_json;
+}
+
+void Media::setId(int mediaId) {
+    id = mediaId;
 }
 
 void Media::addTag(std::string tag) {
@@ -32,7 +36,7 @@ void Media::addTag(std::string tag) {
 }
 
 void Media::removeTag(int idx) {
-    if (idx < 0 || idx > tags.size()) {
+    if (idx < 0 || idx >= tags.size()) { 
         throw std::out_of_range("Invalid index: Element does not exist.");
     }
     tags.erase(tags.begin() + idx);

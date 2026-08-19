@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <optional>
 #include "Enums.hpp"
 
 class Media {
@@ -15,11 +16,9 @@ class Media {
         MediaType type;
         std::vector<std::string> tags; // comments about the media by user
 
-    virtual ~Media() = default;
-
-    Media(int id, int mid, std::optional<bool> rating, WatchStatus status, MediaType type, std::vector<std::string> tags);
-
     std::string toString();
+
+    void setId(int id);
 
     void addTag(std::string tag);
 

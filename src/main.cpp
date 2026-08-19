@@ -1,29 +1,30 @@
 #include "database/DatabaseManager.hpp"
 #include "daos/MediaDAO.hpp"
+#include "services/MediaService.hpp"
+#include "api/MediaController.hpp"
+#include <thread>
+#include <crow.h>
 #include <iostream>
 
 int main() {
     try {
-        // DatabaseManager dbManager("./generated/media-tractor.db");
-
-        // dbManager.initializeSchema();
-
-        // MediaDAO dao(dbManager);
-
-        Media media(1, 1, std::nullopt, WatchStatus::Completed, MediaType::Book, {"Too much romance", "Not enough action"});
-
-        std::cout << media.toString() << std::endl;
-
-        // dao.insertMedia(media);
-
-        //dao.getMediaById();
+        DatabaseManager dbManager("./generated/media-tractor.db");
+        dbManager.initializeSchema();
         
-        // dao.updateMedia(1, true);
+        MediaDAO mediaDao(dbManager);
+        MediaService mediaService(mediaDao);
+        
+        crow::SimpleApp app;
+        MediaController mediaController(mediaService);
 
+        mediaController.registerRoutes(app);
+
+        std::cout << "Starting optimized Crow server on port 8080..." << std::endl;
+        app.port(8080).multithreaded().run();
+        
     } catch (const std::exception& e) {
-        std::cerr << "Fatal Error: " << e.what() << std::endl;
+        std::cerr << "Fatal Error: " << e.what() << '\n';
         return 1;
     }
-
     return 0;
 }
